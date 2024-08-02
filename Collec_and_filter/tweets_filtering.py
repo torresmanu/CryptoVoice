@@ -105,7 +105,20 @@ def process_file(file_path):
                 data = json.loads(line)
                 tweet_data = data.get('data', {})
 
-                tweet_processing(tweet_data, tweets)
+                if 'id' in tweet_data:
+                     tweet_text = tweet_data.get('text', '')
+                     keyword_found = contains_crypto_keyword(tweet_text)
+
+                     if keyword_found:
+                          tweet = {
+                               'author_id': tweet_data.get('author_id'),
+                               'created_at': tweet_data.get('created_at'),
+                               'text': tweet_text,
+                               'tweet_id': tweet_data.get('id'),
+                               'word_found': keyword_found
+                          }
+                          tweets.append(tweet)
+                          print(f"Processed tweet with ID: {tweet['tweet_id']}")
 
             except json.JSONDecodeError:
                 continue
@@ -123,7 +136,20 @@ def process_gz_file(file_path):
                 try:
                     tweet_data = json.loads(line)
 
-                    tweet_processing(tweet_data, tweets)
+                    if 'id' in tweet_data:
+                        tweet_text = tweet_data.get('text', '')
+                        keyword_found = contains_crypto_keyword(tweet_text)
+
+                        if keyword_found:
+                           tweet = {
+                                 'author_id': tweet_data.get('user').get('id'),
+                                 'created_at': tweet_data.get('created_at'),
+                                 'text': tweet_text,
+                                 'tweet_id': tweet_data.get('id'),
+                                 'word_found': keyword_found
+                           }
+                           tweets.append(tweet)
+                           print(f"Processed tweet with ID: {tweet['tweet_id']}")
 
                 except json.JSONDecodeError as e:
                     print(f"JSON decode error: {e} in file {file_path}")
@@ -156,7 +182,7 @@ def main():
 
     # Root directory containing the folders with JSON files.
     # The dir number is the number of the day, the script will access to every hour of that day and process the files.
-    root_directory_path = fr'/Users/manuel/Downloads/{dir_number}'
+    root_directory_path = fr'C:\Users\Manuel\Documents\TFM\twitter-stream-2022-05\2022\05\{dir_number}'
 
     start_time = time.time()  # Record the start time
 
