@@ -5,7 +5,7 @@ import os
 from datetime import datetime
 
 # API key for CryptoCompare
-api_key = '4f42db445d5a80d717f17c9d0b4ce4fe2ed5a5fa07358f7dc9dae88f2b3d6f96'
+api_key = ''
 
 # CryptoCompare endpoints
 coins_list_url = 'https://min-api.cryptocompare.com/data/all/coinlist'
